@@ -17,5 +17,10 @@ import SwiftUI
 }()
 
  // MARK: - UI
+
+var backgroundGradient : LinearGradient {
+    return LinearGradient(colors: [Color.pink, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+}
+
  // MARK: - UX
 

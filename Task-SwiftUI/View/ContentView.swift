@@ -11,9 +11,7 @@ import CoreData
 struct ContentView: View {
     // MARK: - PROPERTIES
     @State var task : String = ""
-    private var isbuttonDisabled : Bool{
-        task.isEmpty
-    }
+    @State private var showNewTaskItem : Bool = false
     // MARK: - FETCHING DATA
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -23,26 +21,7 @@ struct ContentView: View {
     private var items: FetchedResults<Item>
     
     // MARK: - FUNCTION
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            newItem.task = task
-            newItem.completion = false
-            newItem.id = UUID()
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-            
-            task = ""
-            hideKeyboard()
-        }
-        
-    }
+
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
@@ -60,64 +39,86 @@ struct ContentView: View {
     // MARK: - BODY
     var body: some View {
         NavigationView {
-            VStack {
-                VStack( spacing: 16) {
-                    TextField("New Task",text: $task)
-                        .padding()
-                        .background(
-                            Color(uiColor: .systemGray6)
-                        )
-                        .cornerRadius(10)
+            ZStack {
+                 // MARK: - MAIN VIEW
+                
+                
+                VStack {
+                   // MARK: - HEADER
+                    Spacer(minLength: 90)
                     
+                    
+                     // MARK: - NEW TASK BUTTON
                     Button {
-                        addItem()
+                        showNewTaskItem = true
                     } label: {
-                        Spacer()
-                        Text("Save")
-                        Spacer()
-                    }
-                    .disabled(isbuttonDisabled)
-                    .padding()
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .background(
-                        isbuttonDisabled ? Color.gray : Color.pink
-                    )
-                    .cornerRadius(10)
-                    
-                }//:VStack
-                .padding()
-                
-                
-                List {
-                    ForEach(items) { item in
-                        
-                        VStack(alignment: .leading) {
-                            Text(item.task ?? "")
-                                .font(.headline)
-                                .fontWeight(.bold)
+                        Image(systemName: "plus.circle")
+                            .font(.system(size: 30,weight: .semibold,design: .rounded))
+                        Text("New Task")
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
                             
-                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal,20)
+                    .padding(.vertical,15)
+                    .background(LinearGradient(colors: [Color.pink, Color.blue], startPoint: .leading, endPoint: .trailing)).clipShape(Capsule())
+                    .shadow(color: .black.opacity(0.24), radius: 8, x: 0, y: 4)
+
+                    
+                     // MARK: - TASKS
+                    
+                    
+                    List {
+                        ForEach(items) { item in
+                            
+                            VStack(alignment: .leading) {
+                                Text(item.task ?? "")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                
+                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                                    .font(.footnote)
+                                    .foregroundColor(.gray)
+                            }
+                            
+                        }
+                        .onDelete(perform: deleteItems)
+                    }//List
+                    .listStyle(.insetGrouped)
+                    .shadow(color: .black.opacity(0.3), radius: 12)
+                    .padding(.vertical,0)
+                    .frame(maxWidth: 640)
+                    // MARK: - NEW TASK ITEM
+                   
+                }//:VStack
+               
+                
+                
+                
+                .onAppear(perform: {
+                    UITableView.appearance().backgroundColor = .clear
+                })
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            EditButton()
                         }
                         
                     }
-                    .onDelete(perform: deleteItems)
-                }//List
-                
-            }//:VStack
-            
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                    .navigationTitle("Daily Task")
+                .navigationBarTitleDisplayMode(.large)
+                .background(BackgroundImageView())
+                .background(backgroundGradient.ignoresSafeArea(.all))
+                if showNewTaskItem {
+                    BlankView().onTapGesture {
+                        withAnimation {
+                            showNewTaskItem = false
+                        }
+                    }
+                    NewTaskItemView(isShowing: $showNewTaskItem)
                 }
-                
-            }
-            .navigationTitle("Daily Task")
-            .navigationBarTitleDisplayMode(.large)
-            Text("Select an item")
-            
+            }//:ZStack
+           
+           
         }.navigationViewStyle(.stack)
         
     }
