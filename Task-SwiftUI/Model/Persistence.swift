@@ -8,12 +8,12 @@
 import CoreData
 
 struct PersistenceController {
-     // MARK: - 1.Persistent Controller(kalıcı denetleyici(tüm uygulamanın kullanması için singleton))
+    // MARK: - 1.Persistent Controller(kalıcı denetleyici(tüm uygulamanın kullanması için singleton))
     static let shared = PersistenceController()
- // MARK: - Persistent Container(Kalıcı konteyner(Çekirdek veri yığınını başlatmak ve çekirdeği yüklemek için tercih edilen yoldur))
+    // MARK: - Persistent Container(Kalıcı konteyner(Çekirdek veri yığınını başlatmak ve çekirdeği yüklemek için tercih edilen yoldur))
     let container: NSPersistentContainer
-
-     // MARK: - INITIALIZATION(load the persistent store)
+    
+    // MARK: - INITIALIZATION(load the persistent store)
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Task_SwiftUI")
         if inMemory {
@@ -26,7 +26,7 @@ struct PersistenceController {
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
-     // MARK: - 4. PREVIEW(SwiftUI için bir test yapılandırmasıdır)
+    // MARK: - 4. PREVIEW(SwiftUI için bir test yapılandırmasıdır)
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext

@@ -72,15 +72,15 @@
 		C491C210285CA9510075A987 /* Task-SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				C491C230285CAAEA0075A987 /* Info.plist */,
-				C491C215285CA9550075A987 /* Assets.xcassets */,
-				C491C22D285CAA580075A987 /* Utility */,
-				C491C22C285CAA4A0075A987 /* Extension */,
-				C491C22A285CAA270075A987 /* Sound */,
 				C491C211285CA9510075A987 /* Task_SwiftUIApp.swift */,
 				C491C22B285CAA3A0075A987 /* View */,
 				C491C22F285CAA7E0075A987 /* Model */,
 				C491C22E285CAA680075A987 /* Style */,
+				C491C22C285CAA4A0075A987 /* Extension */,
+				C491C22D285CAA580075A987 /* Utility */,
+				C491C230285CAAEA0075A987 /* Info.plist */,
+				C491C215285CA9550075A987 /* Assets.xcassets */,
+				C491C22A285CAA270075A987 /* Sound */,
 				C491C217285CA9550075A987 /* Preview Content */,
 			);
 			path = "Task-SwiftUI";

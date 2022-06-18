@@ -7,20 +7,20 @@
 
 import SwiftUI
 
- // MARK: - FORMATTER
+// MARK: - FORMATTER
 
- let itemFormatter: DateFormatter = {
+let itemFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .short
     formatter.timeStyle = .medium
     return formatter
 }()
 
- // MARK: - UI
+// MARK: - UI
 
 var backgroundGradient : LinearGradient {
     return LinearGradient(colors: [Color.pink, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
 }
 
- // MARK: - UX
+// MARK: - UX
 
