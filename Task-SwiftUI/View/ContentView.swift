@@ -70,6 +70,7 @@ struct ContentView: View {
                         
                         Button {
                             isDarkMode.toggle()
+                            playSound(sound: "sound-tap", type: "mp3")
                         } label: {
                             Image(systemName: isDarkMode ? "moon.circle.fill" : "moon.circle")
                                 .resizable()
@@ -90,6 +91,7 @@ struct ContentView: View {
                      // MARK: - NEW TASK BUTTON
                     Button {
                         showNewTaskItem = true
+                        playSound(sound: "sound-ding", type: "mp3")
                     } label: {
                         Image(systemName: "plus.circle")
                             .font(.system(size: 30,weight: .semibold,design: .rounded))
@@ -109,16 +111,7 @@ struct ContentView: View {
                     
                     List {
                         ForEach(items) { item in
-                            
-                            VStack(alignment: .leading) {
-                                Text(item.task ?? "")
-                                    .font(.headline)
-                                    .fontWeight(.bold)
-                                
-                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
+                            ListRowItemView(item: item)
                             
                         }
                         .onDelete(perform: deleteItems)
@@ -140,10 +133,13 @@ struct ContentView: View {
                 .navigationBarHidden(true)
                     .navigationTitle("Daily Task")
                 .navigationBarTitleDisplayMode(.large)
-                .background(BackgroundImageView())
+                .background(BackgroundImageView().blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)   )
                 .background(backgroundGradient.ignoresSafeArea(.all))
+                .blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)
+                .transition(.move(edge: .bottom))
+               
                 if showNewTaskItem {
-                    BlankView().onTapGesture {
+                    BlankView(backgroundColor: isDarkMode ? Color.black : Color.gray, backgroundOpacity: isDarkMode ?  0.3 : 0.5).onTapGesture {
                         withAnimation {
                             showNewTaskItem = false
                         }
